@@ -1,6 +1,5 @@
 use std::io;
 
-// Структура с данными (Clippy скажет, что поле не используется)
 struct TemperatureHistory {
     last_input: f64,
 }
@@ -13,57 +12,43 @@ fn main() {
 
     let mut input_buffer = String::new();
     
-    // ОШИБКА: unwrap используется, хотя лучше expect или '?'
     io::stdin().read_line(&mut input_buffer).unwrap();
 
-    // ИСПРАВЛЕНО: убраны return из match, чтобы код компилировался
     let celsius: f64 = match input_buffer.trim().parse() {
         Ok(num) => {
-            num // <-- CLIPPY: needless_return? Нет, но можно убрать {}
+            num
         }
         Err(_) => {
             println!("Ошибка: введите число. Использую 0.0 по умолчанию.");
             0.0
         }
-    }; // <-- CLIPPY: лишняя точка с запятой? Нет, это ок
+    };
 
-    // ОШИБКА: поле не читается, только пишется (dead_code / unused)
-    history.last_input = celsius.clone(); // <-- CLIPPY: clone on Copy type (f64 is Copy)
+    history.last_input = celsius.clone();
 
-    // ОШИБКА: сравнение с true
     let is_positive = celsius > 0.0;
     if is_positive == true {
-        // <-- CLIPPY: needless_bool, можно просто `if is_positive`
         println!("Температура выше нуля.");
     }
 
-    // ОШИБКА: написание цикла через while и инкремент вместо for
     let scales = ["F", "K"];
     let mut index = 0;
     while index < 2 {
-        // <-- CLIPPY: suggest `for item in &scales`
         let scale = scales[index];
         
-        // ОШИБКА: лишние скобки вокруг условия
         let result = if (scale == "F") {
-            // <-- CLIPPY: unnecessary parentheses
             celsius * 1.8 + 32.0
         } else {
             celsius + 273.15
         };
 
-        // ОШИБКА: format! в println! без нужды
         println!("{}: {}", scale, format!("{:.2}", result));
-        // <-- CLIPPY: useless_format
         
-        index = index + 1; // <-- CLIPPY: suggest `index += 1`
+        index = index + 1;
     }
 
-    // ОШИБКА: лишнее преобразование типов
-    let _rounded: i32 = celsius as i32 as i32; // <-- CLIPPY: unnecessary cast
+    let _rounded: i32 = celsius as i32 as i32;
 
-    // ОШИБКА: создание переменной и её немедленный возврат
     let exit_code = 0;
-    let _ = exit_code; // <-- ИСПРАВЛЕНО: используем переменную, иначе warning
-    // В main() возвращать значение нельзя, это () -> ()
+    let _ = exit_code;
 }
