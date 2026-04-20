@@ -1,0 +1,52 @@
+[Running] cd "c:\прога\brpo\lab_2\" && rustc code.rs && "c:\прога\brpo\lab_2\"code
+error[E0106]: missing lifetime specifier
+ --> code.rs:4:27
+  |
+4 | fn get_default_value() -> &String {
+  |                           ^ expected named lifetime parameter
+  |
+  = help: this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+help: consider using the `'static` lifetime, but this is uncommon unless you're returning a borrowed value from a `const` or a `static`
+  |
+4 | fn get_default_value() -> &'static String {
+  |                            +++++++
+help: instead, you are more likely to want to return an owned value
+  |
+4 - fn get_default_value() -> &String {
+4 + fn get_default_value() -> String {
+  |
+
+error[E0277]: can't compare `{integer}` with `&str`
+  --> code.rs:36:12
+   |
+36 |     if num == text {
+   |            ^^ no implementation for `{integer} == &str`
+   |
+   = help: the trait `PartialEq<&str>` is not implemented for `{integer}`
+   = help: the following other types implement trait `PartialEq<Rhs>`:
+             f128
+             f16
+             f32
+             f64
+             i128
+             i16
+             i32
+             i64
+           and 8 others
+
+error[E0594]: cannot assign to `*value`, which is behind a `&` reference
+  --> code.rs:13:9
+   |
+11 |     if let Some(value) = data.get(&key) {
+   |                 ----- consider changing this binding's type to be: `&mut i32`
+12 |         // Ошибка: Нельзя изменять через неизменяемую ссылку
+13 |         *value += 10; // value - неизменяемая ссылка
+   |         ^^^^^^^^^^^^ `value` is a `&` reference, so it cannot be written to
+
+error: aborting due to 3 previous errors
+
+Some errors have detailed explanations: E0106, E0277, E0594.
+For more information about an error, try `rustc --explain E0106`.
+
+[Done] exited with code=1 in 0.255 seconds
+
