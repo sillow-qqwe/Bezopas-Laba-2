@@ -1,0 +1,57 @@
+use std::collections::HashMap;
+
+// Ошибка 1: Возврат ссылки на локальную переменную
+fn get_default_value() -> &String {
+    let default = String::from("default");
+    &default  // Ошибка: default удаляется в конце функции
+}
+
+// Ошибка 2: Попытка изменения неизменяемой переменной
+fn process_data(data: &HashMap<String, i32>, key: String) {
+    if let Some(value) = data.get(&key) {
+        // Ошибка: Нельзя изменять через неизменяемую ссылку
+        *value += 10;  // value - неизменяемая ссылка
+    }
+}
+
+fn main() {
+    // Ошибка 3: Использование перемещённого значения
+    let s1 = String::from("hello");
+    let s2 = s1;  // s1 перемещён в s2
+    println!("{}", s1);  // Ошибка: значение s1 больше не существует
+
+    // Ошибка 4: Неправильная работа с Option
+    let numbers: Vec<Option<i32>> = vec![Some(1), None, Some(3)];
+    let sum: i32 = numbers.iter().map(|x| x.unwrap()).sum();  // Паника на None
+
+    // Ошибка 5: Путаница с изменяемыми и неизменяемыми заимствованиями
+    let mut data = vec![1, 2, 3];
+    let first = &data[0];
+    data.push(4);  // Ошибка: неизменяемое заимствование first существует
+    println!("{}", first);
+
+    // Ошибка 6: Сравнение разных типов
+    let num = 42;
+    let text = "42";
+    if num == text {  // Ошибка: нельзя сравнить i32 и &str
+        println!("Equal");
+    }
+
+    // Ошибка 7: Некорректное использование итератора
+    let mut items = vec![10, 20, 30];
+    for item in items.iter_mut() {
+        if *item == 20 {
+            items.remove(1);  // Ошибка: изменяем коллекцию во время итерации
+        }
+    }
+
+    // Ошибка 8: Возврат ссылки из функции (будет ошибка компиляции)
+    let dangling = get_default_value();
+    println!("{}", dangling);
+
+    // Ошибка 9: Игнорирование Result (unwrap без проверки)
+    let file = std::fs::File::open("nonexistent.txt").unwrap();  // Паника
+
+    // Ошибка 10: Бесконечная рекурсия без типажей (закомментировано)
+    // struct Node { next: Node }  // Ошибка: бесконечный размер
+}
