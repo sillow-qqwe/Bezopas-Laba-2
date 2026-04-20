@@ -1,57 +1,69 @@
-use std::collections::HashMap;
+use std::io;
 
-// Ошибка 1: Возврат ссылки на локальную переменную
-fn get_default_value() -> &String {
-    let default = String::from("default");
-    &default  // Ошибка: default удаляется в конце функции
-}
-
-// Ошибка 2: Попытка изменения неизменяемой переменной
-fn process_data(data: &HashMap<String, i32>, key: String) {
-    if let Some(value) = data.get(&key) {
-        // Ошибка: Нельзя изменять через неизменяемую ссылку
-        *value += 10;  // value - неизменяемая ссылка
-    }
+// Структура с данными (Clippy скажет, что поле не используется)
+struct TemperatureHistory {
+    last_input: f64,
 }
 
 fn main() {
-    // Ошибка 3: Использование перемещённого значения
-    let s1 = String::from("hello");
-    let s2 = s1;  // s1 перемещён в s2
-    println!("{}", s1);  // Ошибка: значение s1 больше не существует
+    let mut history = TemperatureHistory { last_input: 0.0 };
 
-    // Ошибка 4: Неправильная работа с Option
-    let numbers: Vec<Option<i32>> = vec![Some(1), None, Some(3)];
-    let sum: i32 = numbers.iter().map(|x| x.unwrap()).sum();  // Паника на None
+    println!("Конвертер температур!");
+    println!("Введите градусы Цельсия:");
 
-    // Ошибка 5: Путаница с изменяемыми и неизменяемыми заимствованиями
-    let mut data = vec![1, 2, 3];
-    let first = &data[0];
-    data.push(4);  // Ошибка: неизменяемое заимствование first существует
-    println!("{}", first);
+    let mut input_buffer = String::new();
+    
+    // ОШИБКА: unwrap используется, хотя лучше expect или '?'
+    io::stdin().read_line(&mut input_buffer).unwrap();
 
-    // Ошибка 6: Сравнение разных типов
-    let num = 42;
-    let text = "42";
-    if num == text {  // Ошибка: нельзя сравнить i32 и &str
-        println!("Equal");
-    }
-
-    // Ошибка 7: Некорректное использование итератора
-    let mut items = vec![10, 20, 30];
-    for item in items.iter_mut() {
-        if *item == 20 {
-            items.remove(1);  // Ошибка: изменяем коллекцию во время итерации
+    // ОШИБКА: лишний return и ; после if-else блока
+    let celsius: f64 = match input_buffer.trim().parse() {
+        Ok(num) => {
+            return num; // <-- CLIPPY: needless_return
         }
+        Err(_) => {
+            // ОШИБКА: println! с пустыми скобками формата
+            println!("Ошибка: введите число. Использую 0.0 по умолчанию.");
+            return 0.0;
+        }
+    }; // <-- CLIPPY: лишняя точка с запятой делает это Statement, а не Expression
+
+    // ОШИБКА: поле не читается, только пишется (dead_code / unused)
+    history.last_input = celsius.clone(); // <-- CLIPPY: clone on Copy type (f64 is Copy)
+
+    // ОШИБКА: сравнение с true
+    let is_positive = celsius > 0.0;
+    if is_positive == true {
+        // <-- CLIPPY: needless_bool, можно просто `if is_positive`
+        println!("Температура выше нуля.");
     }
 
-    // Ошибка 8: Возврат ссылки из функции (будет ошибка компиляции)
-    let dangling = get_default_value();
-    println!("{}", dangling);
+    // ОШИБКА: написание цикла через while и инкремент вместо for
+    let scales = ["F", "K"];
+    let mut index = 0;
+    while index < 2 {
+        // <-- CLIPPY: suggest `for item in &scales`
+        let scale = scales[index];
+        
+        // ОШИБКА: лишние скобки вокруг условия
+        let result = if (scale == "F") {
+            // <-- CLIPPY: unnecessary parentheses
+            celsius * 1.8 + 32.0
+        } else {
+            celsius + 273.15
+        };
 
-    // Ошибка 9: Игнорирование Result (unwrap без проверки)
-    let file = std::fs::File::open("nonexistent.txt").unwrap();  // Паника
+        // ОШИБКА: format! в println! без нужды
+        println!("{}: {}", scale, format!("{:.2}", result));
+        // <-- CLIPPY: useless_format
+        
+        index = index + 1; // <-- CLIPPY: suggest `index += 1`
+    }
 
-    // Ошибка 10: Бесконечная рекурсия без типажей (закомментировано)
-    // struct Node { next: Node }  // Ошибка: бесконечный размер
+    // ОШИБКА: лишнее преобразование типов
+    let _rounded: i32 = celsius as i32 as i32; // <-- CLIPPY: unnecessary cast
+
+    // ОШИБКА: создание переменной и её немедленный возврат
+    let exit_code = 0;
+    exit_code // <-- CLIPPY: let_and_return
 }
