@@ -16,17 +16,16 @@ fn main() {
     // ОШИБКА: unwrap используется, хотя лучше expect или '?'
     io::stdin().read_line(&mut input_buffer).unwrap();
 
-    // ОШИБКА: лишний return и ; после if-else блока
+    // ИСПРАВЛЕНО: убраны return из match, чтобы код компилировался
     let celsius: f64 = match input_buffer.trim().parse() {
         Ok(num) => {
-            return num; // <-- CLIPPY: needless_return
+            num // <-- CLIPPY: needless_return? Нет, но можно убрать {}
         }
         Err(_) => {
-            // ОШИБКА: println! с пустыми скобками формата
             println!("Ошибка: введите число. Использую 0.0 по умолчанию.");
-            return 0.0;
+            0.0
         }
-    }; // <-- CLIPPY: лишняя точка с запятой делает это Statement, а не Expression
+    }; // <-- CLIPPY: лишняя точка с запятой? Нет, это ок
 
     // ОШИБКА: поле не читается, только пишется (dead_code / unused)
     history.last_input = celsius.clone(); // <-- CLIPPY: clone on Copy type (f64 is Copy)
@@ -65,5 +64,6 @@ fn main() {
 
     // ОШИБКА: создание переменной и её немедленный возврат
     let exit_code = 0;
-    exit_code // <-- CLIPPY: let_and_return
+    let _ = exit_code; // <-- ИСПРАВЛЕНО: используем переменную, иначе warning
+    // В main() возвращать значение нельзя, это () -> ()
 }
