@@ -8,3 +8,5 @@
 1. создать файл
 2. установить bandit
 3. всё будет подсвечено!
+
+https://chat.deepseek.com/share/uhgfu8cnklfxc92pop
