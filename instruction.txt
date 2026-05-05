@@ -1,3 +1,11 @@
+Кратко
+cd C:\Users\$env:USERNAME\Desktop\go-lint-lab
+go vet ./...
+staticcheck ./...
+golangci-lint run ./...
+cd C:\Users\$env:USERNAME\Desktop\rust-lint-lab
+cargo clippy
+
 Для раст
 1. создать проект через cargo init
 2. скопировать содержимое code.rs в main.rs
