@@ -4,9 +4,5 @@
 3. перейти в рабочую папку
 4. использовать cargo clippy
 5. если нужно исправить ошибки то cargo clippy --fix
-Для питон
-1. создать файл
-2. установить bandit
-3. всё будет подсвечено!
 
 https://chat.deepseek.com/share/uhgfu8cnklfxc92pop
