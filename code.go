@@ -7,22 +7,18 @@ import (
 	"time"
 )
 
-// Плохое имя переменной, неиспользуемая константа
-const UnusedConstant = 42
+const UnusedConstant = 42 // Плохое имя переменной, неиспользуемая константа
 
-// Структура с неэкспортируемыми полями, но без комментария
-type userData struct {
+type userData struct { // Структура с неэкспортируемыми полями
 	Name  string
 	email string
-	age   int // возраст не используется в логике
+	age   int // возраст не используется
 }
 
-// Функция с дублированием кода и игнорированием ошибок
-func createUsers(count int) []userData {
+func createUsers(count int) []userData { // Функция с дублированием кода
 	var users []userData
-
 	for i := 0; i < count; i++ {
-		// Уязвимость: жестко заданные учетные данные
+		// Хардкод данные
 		if i%2 == 0 {
 			users = append(users, userData{
 				Name:  "Admin",
@@ -37,21 +33,18 @@ func createUsers(count int) []userData {
 			})
 		}
 	}
-
 	return users
 }
 
-// Функция, возвращающая ошибку, которая не обрабатывается
 func readConfig(filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
-	return nil
+	return nil // Функция возвращает ошибку, которая не обрабатывается
 }
 
-// Функция с теневым определением переменной
 func processData(data []userData) {
 	// Потенциальный nil pointer dereference
 	if data == nil {
@@ -59,22 +52,18 @@ func processData(data []userData) {
 	}
 
 	for i, user := range data {
-		// Теневое определение: новая переменная data внутри цикла
-		data := fmt.Sprintf("User %d: %s", i, user.Name)
+		data := fmt.Sprintf("User %d: %s", i, user.Name) // Новая переменная data внутри цикла
 		_ = data
 	}
 
-	// Неиспользуемая переменная
-	unusedVar := "I am not used"
+	unusedVar := "I am not used" // Неиспользуемая переменная
 
-	// Бесконечный цикл в некоторых случаях
-	if len(data) > 0 {
+	if len(data) > 0 { // Бесконечный цикл в некоторых случаях
 		_ = unusedVar
 	}
 }
 
-// Функция со сложной вложенностью (цикломатическая сложность)
-func analyzeUser(user userData, isAdmin bool, isActive bool, isVerified bool) string {
+func analyzeUser(user userData, isAdmin bool, isActive bool, isVerified bool) string { // Функция со сложной вложенностью
 	if isAdmin {
 		if isActive {
 			if isVerified {
@@ -99,29 +88,14 @@ func analyzeUser(user userData, isAdmin bool, isActive bool, isVerified bool) st
 	}
 }
 
-// Точка входа с неправильным форматированием
 func main() {
 	// Чтение конфига без обработки ошибки
 	readConfig("config.yaml")
-
-	// Использование math/rand без seed (устаревший подход)
-	fmt.Println("Random number:", rand.Intn(100))
-
-	// Неиспользуемая переменная
-	message := "Hello, World!"
-
 	users := createUsers(5)
-
 	processData(users)
-
-	// Использование устаревшей функции
-	fmt.Println("Current time:", time.Now().String())
 
 	result := analyzeUser(users[0], true, true, false)
 	fmt.Println(result)
-
-	// Ошибка: переменная объявлена, но не используется
-	_ = message
 
 	// Пустой select блокирует навсегда
 	select {}
