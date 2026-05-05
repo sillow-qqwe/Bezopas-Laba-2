@@ -18,6 +18,7 @@ cd C:\Users\$env:USERNAME\Desktop\rust-lint-lab
 rustc --version
 cargo --version
 cargo clippy 2>&1 | Tee-Object -FilePath clippy_report.txt
+cargo clippy --fix
 cargo clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery 2>&1 | Tee-Object -FilePath clippy_full_report.txt
 
 Команды go (go vet, staticcheck, golangci)
@@ -25,6 +26,7 @@ cd C:\Users\$env:USERNAME\Desktop\go-lint-lab
 go version
 go vet ./... 2>&1 | Tee-Object -FilePath govet_report.txt
 staticcheck ./... 2>&1 | Tee-Object -FilePath staticcheck_report.txt
+staticcheck -fix ./...
 golangci-lint run ./... 2>&1 | Tee-Object -FilePath golangci_report.txt
 
 Отчёты
