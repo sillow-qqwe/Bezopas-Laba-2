@@ -5,4 +5,24 @@
 4. использовать cargo clippy
 5. если нужно исправить ошибки то cargo clippy --fix
 
+cd C:\Users\$env:USERNAME\Desktop\go-lint-lab
+go version
+go vet ./... 2>&1 | Tee-Object -FilePath govet_report.txt
+staticcheck ./... 2>&1 | Tee-Object -FilePath staticcheck_report.txt
+golangci-lint run ./... 2>&1 | Tee-Object -FilePath golangci_report.txt
+notepad govet_report.txt
+notepad staticcheck_report.txt
+notepad golangci_report.txt
+
+
+cd C:\Users\$env:USERNAME\Desktop\rust-lint-lab
+rustc --version
+cargo --version
+cargo clippy 2>&1 | Tee-Object -FilePath clippy_report.txt
+cargo clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery 2>&1 | Tee-Object -FilePath clippy_full_report.txt
+notepad clippy_report.txt
+notepad clippy_full_report.txt
+
+
+
 https://chat.deepseek.com/share/uhgfu8cnklfxc92pop
