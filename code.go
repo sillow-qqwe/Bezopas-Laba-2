@@ -91,12 +91,17 @@ func analyzeUser(user userData, isAdmin bool, isActive bool, isVerified bool) st
 func main() {
 	// Чтение конфига без обработки ошибки
 	readConfig("config.yaml")
+
 	users := createUsers(5)
 	processData(users)
+	go processData(users)
+	go func() {
+	    users[0].Name = "Changed" // Гонка данных с processData
+	}()
 
 	result := analyzeUser(users[0], true, true, false)
 	fmt.Println(result)
 
-	// Пустой select блокирует навсегда
+	// Пустой select = программа виснет
 	select {}
 }
