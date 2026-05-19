@@ -36,10 +36,6 @@ notepad golangci_report.txt
 notepad clippy_report.txt
 notepad clippy_full_report.txt
 
-Запуск скрипта run_all_linters.ps1
-cd C:\Users\$env:USERNAME\Desktop
-powershell -ExecutionPolicy Bypass -File run_all_linters.ps1
-
 Структура папок
 C:\Users\Имя\Desktop\
 ├── go-lint-lab\
@@ -57,5 +53,3 @@ C:\Users\Имя\Desktop\
     ├── clippy.toml           (если есть)
     ├── clippy_report.txt     (появится после запуска)
     └── clippy_full_report.txt
-
-https://chat.deepseek.com/share/uhgfu8cnklfxc92pop
