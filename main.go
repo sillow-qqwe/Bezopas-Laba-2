@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// Глобальная переменная с неиспользуемым импортом (для демонстрации)
+// Глобальная переменная с неиспользуемым импортом
 var unusedGlobal int = 100 // Не используется в программе
 
 type Config struct {
@@ -54,11 +54,10 @@ func findMax(values []int) int {
 
 // Ошибка: неиспользуемый параметр
 func unusedParam(x int, y string) bool {
-	return x > 10 // y не используется
+	return x > 10
 }
 
 func main() {
-	// Ошибка: непроверенная ошибка
 	file, _ := os.Open("nonexistent.txt")
 	defer file.Close() // Паника, если file == nil
 	
@@ -72,7 +71,7 @@ func main() {
 	
 	// Ошибка: ненужное приведение типов
 	val := 42
-	check := bool(val != 0) // Избыточное преобразование
+	check := bool(val != 0)
 	
 	// Ошибка: неоправданно сложное условие
 	if check == true { // Можно просто if check
