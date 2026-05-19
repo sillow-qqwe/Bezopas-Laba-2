@@ -40,7 +40,7 @@ fn read_config(path: String) -> Result<String, std::io::Error> {
 fn check_option(opt: Option<i32>) -> i32 {
     match opt {
         Some(x) => x,
-        _ => 0, // Клиппи предложит убрать match
+        _ => 0,
     }
 }
 
@@ -55,7 +55,7 @@ fn main() {
     // Ошибка: двойная ссылка
     let x = 5;
     let y = &x;
-    let z = **&y; // Избыточное разыменование
+    let z = **&y;
     
     // Ошибка: использование format! с одним аргументом
     let msg = format!("{}", greeting);
