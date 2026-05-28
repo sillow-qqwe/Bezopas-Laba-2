@@ -55,6 +55,15 @@ fn main() {
     let x = 5;
     let y = &x;
     let z = **&y;
+
+    let a = 4;
+    let b = 6;
+    let mut c = 2;
+    let sum = a + b;
+    c = a + b + c;
+
+    println!("Сумма {} и {} равна {}", a, b, sum);
+    println!("Сумма {}, {} и 2 равна {}", a, b, c);
     
     // использование format! с одним аргументом
     let msg = format!("{}", greeting);
