@@ -36,9 +36,9 @@ fn import_from_json(filename: &str) -> Result<Vec<User>, Box<dyn Error>> {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut users = vec![
-        User::new(1, "Alice", "alice@example.com", 25),
+        User::new(1, "Regina", "regina@example.com", 25),
         User::new(2, "Bob", "bob@example.com", 150),  // Намеренная ошибка: возраст 150
-        User::new(3, "Charlie", "not-an-email", 30),  // Намеренная ошибка: невалидный email
+        User::new(3, "Peter", "no-email", 30),  // Намеренная ошибка: невалидный email
     ];
     
     export_to_json(&users, "users.json")?;
